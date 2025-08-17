@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UN1FIED S0UNDS — Independent Artist</title>
+  <meta name="description" content="UN1FIED S0UNDS — Independent artist. Stream tracks, buy music, and get in touch." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS styles omitted for brevity, same as before */
+  </style>
+</head>
+<body>
+  <!-- This index.html file is the main entry point for your site. It is not a folder. Place it at the root of your repository alongside the assets folder. GitHub Pages automatically uses index.html as the page displayed at your site URL. -->
+
+  <header>
+    <div class="nav">
+      <div class="brand no-select" title="UN1FIED S0UNDS">
+        <span>UN<span style="color:var(--accent)">1</span>FIED</span>
+        <span class="pill">1 • 0</span>
+        <span>S<span style="color:var(--accent-2)">0</span>UNDS</span>
+      </div>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#music">Music</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="hero container">
+    <h1>UN<span style="color:var(--accent)">1</span>FIED S<span style="color:var(--accent-2)">0</span>UNDS</h1>
+    <p>Independent artist. Digital code in every beat. Stream tracks below, and buy when you're ready — downloads stay locked until you flip the switch.</p>
+    <div class="cta">
+      <a class="btn primary" href="#music">Browse Music</a>
+      <a class="btn" href="#contact">Contact</a>
+    </div>
+  </main>
+
+  <section id="music" class="container">
+    <div class="section-title">
+      <h2>Music</h2>
+      <span class="pill">Streaming Preview • Buy Available</span>
+    </div>
+    <div id="tracks" class="grid" aria-live="polite"></div>
+  </section>
+
+  <section id="contact" class="container">
+    <div class="section-title">
+      <h2>Contact</h2>
+    </div>
+    <div class="card">
+      <div class="body">
+        <p class="muted">Booking, licensing, or collabs — hit me up:</p>
+        <p style="margin:.5rem 0 0">Email: <a href="mailto:contact@un1fieds0unds.example">contact@un1fieds0unds.example</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <span>© <span id="year"></span> UN1FIED S0UNDS</span>
+      <span class="muted">Built with ♥ — streaming previews only</span>
+    </div>
+  </footer>
+
+  <script>
+    const allowDownloads = false;
+    const buyMode = "paypal";
+
+    const catalog = [
+      {title: "Digital Vibes", price: 2.99, cover: "", src: "assets/audio/digital-vibes.mp3", description: "Glitchy synths • head-nod groove"},
+      {title: "Binary Bloom", price: 2.99, cover: "", src: "assets/audio/binary-bloom.mp3", description: "Lush pads • midnight drive"},
+      {title: "Circuit Dreams", price: 2.99, cover: "", src: "assets/audio/circuit-dreams.mp3", description: "Ambient drift • neon haze"}
+    ];
+
+    const $tracks = document.getElementById('tracks');
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function money(n){return `$${n.toFixed(2)}`}
+
+    function renderTrackCard(track){
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="cover ${track.cover ? '' : 'no-select'}" ${track.cover ? `style="background-image:url('${track.cover}');background-size:cover;background-position:center"` : ''}>
+          <span class="chip">UN<span style="color:var(--accent)">1</span>FIED • S<span style="color:var(--accent-2)">0</span>UNDS</span>
+        </div>
+        <div class="body">
+          <h3 class="title">${track.title}</h3>
+          <p class="muted">${track.description || ''}</p>
+          <div class="player">
+            <audio controls controlsList="nodownload noplaybackrate" preload="none" oncontextmenu="return false">
+              <source src="${track.src}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <div class="actions">
+            <a class="btn small primary" href="https://www.paypal.com/checkoutnow?item_name=${encodeURIComponent(track.title)}&amount=${track.price.toFixed(2)}" target="_blank">Buy ${money(track.price)}</a>
+            ${allowDownloads ? `<a class="btn small" href="${track.src}" download>Download</a>` : ''}
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function mount(){
+      catalog.forEach(t=> $tracks.appendChild(renderTrackCard(t)));
+      document.querySelectorAll('.cover').forEach(el=> el.addEventListener('contextmenu', e=> e.preventDefault()));
+    }
+
+    mount();
+  </script>
+</body>
+</html>
